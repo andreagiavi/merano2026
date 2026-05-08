@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIN Veneto – Merano 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blu: #0a1628;
+    --azzurro: #1a6fd4;
+    --azzurro-chiaro: #3a9bd5;
+    --oro: #f0b429;
+    --grigio: #f4f6fa;
+    --testo: #1a2035;
+    --bordo: #dde3f0;
+    --verde: #22c55e;
+    --rosso: #ef4444;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--grigio);
+    color: var(--testo);
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--blu);
+    color: white;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: var(--azzurro);
+    border-radius: 50%;
+    opacity: 0.15;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 20%;
+    width: 200px; height: 200px;
+    background: var(--oro);
+    border-radius: 50%;
+    opacity: 0.08;
+  }
+
+  .header-inner {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 36px 24px 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header-badge {
+    display: inline-block;
+    background: var(--azzurro);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+
+  header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(40px, 8vw, 64px);
+    letter-spacing: 3px;
+    line-height: 1;
+    color: white;
+  }
+
+  header h1 span {
+    color: var(--oro);
+  }
+
+  header p {
+    margin-top: 10px;
+    color: rgba(255,255,255,0.65);
+    font-size: 14px;
+    font-weight: 300;
+  }
+
+  /* ── STEP WRAPPER ── */
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 32px 16px 60px;
+  }
+
+  .step { display: none; }
+  .step.active { display: block; animation: fadeIn .3s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SEARCH ── */
+  .search-box {
+    background: white;
+    border-radius: 16px;
+    padding: 32px 28px;
+    box-shadow: 0 4px 24px rgba(10,22,40,.08);
+  }
+
+  .search-box h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1.5px;
+    color: var(--blu);
+    margin-bottom: 6px;
+  }
+
+  .search-box p {
+    color: #6b7a99;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .search-input-wrap {
+    position: relative;
+  }
+
+  .search-input-wrap input {
+    width: 100%;
+    padding: 14px 16px 14px 44px;
+    border: 2px solid var(--bordo);
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    transition: border-color .2s;
+    background: var(--grigio);
+  }
+
+  .search-input-wrap input:focus { border-color: var(--azzurro); background: white; }
+
+  .search-icon {
+    position: absolute;
+    left: 14px; top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+  }
+
+  .results-list {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .result-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 2px solid var(--bordo);
+    cursor: pointer;
+    transition: all .2s;
+    background: white;
+  }
+
+  .result-item:hover {
+    border-color: var(--azzurro);
+    background: #f0f6ff;
+    transform: translateX(4px);
+  }
+
+  .result-name {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--testo);
+  }
+
+  .result-societa {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 2px;
+  }
+
+  .result-arrow {
+    color: var(--azzurro);
+    font-size: 18px;
+  }
+
+  /* ── FORM ── */
+  .form-header {
+    background: white;
+    border-radius: 16px;
+    padding: 24px 28px;
+    box-shadow: 0 4px 24px rgba(10,22,40,.08);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .form-avatar {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, var(--azzurro), var(--azzurro-chiaro));
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+  }
+
+  .form-header h2 {
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--blu);
+  }
+
+  .form-header p {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-top: 2px;
+  }
+
+  .btn-back {
+    margin-left: auto;
+    background: none;
+    border: 2px solid var(--bordo);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    color: #6b7a99;
+    transition: all .2s;
+    flex-shrink: 0;
+  }
+
+  .btn-back:hover { border-color: #94a3b8; color: var(--testo); }
+
+  /* ── MEAL SECTIONS ── */
+  .sezione {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(10,22,40,.08);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .sezione-header {
+    background: var(--blu);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sezione-header .giorno {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--oro);
+  }
+
+  .sezione-header .pasto {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: white;
+    letter-spacing: 1px;
+  }
+
+  .sezione-body {
+    padding: 20px 24px;
+  }
+
+  .label-piccolo {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    margin-bottom: 10px;
+  }
+
+  .meal-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  @media(max-width: 480px) { .meal-options { grid-template-columns: 1fr; } }
+
+  .meal-option {
+    position: relative;
+  }
+
+  .meal-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0; height: 0;
+  }
+
+  .meal-option label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 2px solid var(--bordo);
+    cursor: pointer;
+    transition: all .2s;
+    font-size: 13.5px;
+    line-height: 1.4;
+    color: var(--testo);
+    min-height: 52px;
+    background: var(--grigio);
+  }
+
+  .meal-option input:checked + label {
+    border-color: var(--azzurro);
+    background: #eef5ff;
+    color: var(--azzurro);
+    font-weight: 600;
+  }
+
+  .meal-option label:hover {
+    border-color: var(--azzurro-chiaro);
+    background: #f5f9ff;
+  }
+
+  .check-circle {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--bordo);
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: all .2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .meal-option input:checked + label .check-circle {
+    background: var(--azzurro);
+    border-color: var(--azzurro);
+  }
+
+  .meal-option input:checked + label .check-circle::after {
+    content: '✓';
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  /* ── TAGLIE ── */
+  .taglie-sezione {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(10,22,40,.08);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  .taglie-header {
+    background: linear-gradient(135deg, #1a2035, #0a1628);
+    padding: 14px 24px;
+  }
+
+  .taglie-header .label {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--oro);
+  }
+
+  .taglie-header h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; color: white; letter-spacing: 1px;
+  }
+
+  .taglie-body {
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media(max-width: 480px) { .taglie-body { grid-template-columns: 1fr; } }
+
+  .taglia-group label.group-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #6b7a99;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .taglia-select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid var(--bordo);
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: 'DM Sans', sans-serif;
+    appearance: none;
+    background: var(--grigio) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center;
+    cursor: pointer;
+    outline: none;
+    color: var(--testo);
+    transition: border-color .2s;
+  }
+
+  .taglia-select:focus { border-color: var(--azzurro); background-color: white; }
+
+  /* ── SUBMIT ── */
+  .btn-submit {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--azzurro), var(--azzurro-chiaro));
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all .25s;
+    box-shadow: 0 6px 20px rgba(26,111,212,.35);
+    margin-top: 8px;
+  }
+
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(26,111,212,.45);
+  }
+
+  .btn-submit:disabled {
+    opacity: .6; cursor: not-allowed; transform: none;
+  }
+
+  /* ── SUCCESS ── */
+  .success-card {
+    background: white;
+    border-radius: 20px;
+    padding: 48px 28px;
+    text-align: center;
+    box-shadow: 0 4px 24px rgba(10,22,40,.08);
+  }
+
+  .success-icon {
+    width: 72px; height: 72px;
+    background: linear-gradient(135deg, var(--verde), #16a34a);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 32px;
+    box-shadow: 0 8px 24px rgba(34,197,94,.3);
+  }
+
+  .success-card h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 2px;
+    color: var(--blu);
+    margin-bottom: 8px;
+  }
+
+  .success-card p {
+    color: #6b7a99;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .success-card p strong { color: var(--testo); }
+
+  .btn-nuovo {
+    margin-top: 28px;
+    display: inline-block;
+    padding: 14px 28px;
+    border: 2px solid var(--bordo);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: #6b7a99;
+    cursor: pointer;
+    background: none;
+    transition: all .2s;
+  }
+
+  .btn-nuovo:hover { border-color: var(--azzurro); color: var(--azzurro); }
+
+  /* ── CONFIG BANNER ── */
+  .config-banner {
+    background: linear-gradient(135deg, #fff7ed, #fffbeb);
+    border: 2px solid #f59e0b;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: #92400e;
+    line-height: 1.6;
+  }
+
+  .config-banner strong { display: block; margin-bottom: 4px; color: #78350f; }
+  .config-banner code { background: #fde68a; padding: 1px 6px; border-radius: 4px; font-size: 12px; }
+
+  .toast {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--testo);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: transform .3s ease;
+    z-index: 100;
+    white-space: nowrap;
+    box-shadow: 0 8px 24px rgba(0,0,0,.2);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.error { background: var(--rosso); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-badge">FIN Veneto</div>
+    <h1>MERANO <span>2026</span></h1>
+    <p>Selezione pasti e taglie vestiario — compila il form per il tuo nominativo</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ══ STEP 1: Ricerca atleta ══ -->
+  <div class="step active" id="step-search">
+    <div id="config-warning" class="config-banner" style="display:none">
+      <strong>⚠️ Configurazione necessaria</strong>
+      Apri questo file in un editor di testo e sostituisci <code>https://script.google.com/macros/s/AKfycbzNRsQ5Oqn6KmH4_1cVMOchOODCS5l73zrbHpt77lJIc-59fQGP1YOy5qJtFScTzG8b/exec</code> con l'URL dello script Google Apps Script. Vedi le istruzioni allegate.
+    </div>
+    <div class="search-box">
+      <h2>CERCA IL TUO NOME</h2>
+      <p>Digita il tuo cognome o nome per trovare il tuo nominativo</p>
+      <div class="search-input-wrap">
+        <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="search-input" placeholder="es. Rossi, Mario…" autocomplete="off" autocorrect="off">
+      </div>
+      <div class="results-list" id="results-list"></div>
+    </div>
+  </div>
+
+  <!-- ══ STEP 2: Form ══ -->
+  <div class="step" id="step-form">
+    <div class="form-header">
+      <div class="form-avatar" id="avatar-text"></div>
+      <div>
+        <h2 id="atleta-nome"></h2>
+        <p id="atleta-societa"></p>
+      </div>
+      <button class="btn-back" onclick="goBack()">← Cambia</button>
+    </div>
+
+    <!-- VENERDÌ PRANZO -->
+    <div class="sezione">
+      <div class="sezione-header">
+        <div>
+          <div class="giorno">Venerdì</div>
+          <div class="pasto">Pranzo</div>
+        </div>
+      </div>
+      <div class="sezione-body">
+        <div class="label-piccolo">Scegli il primo</div>
+        <div class="meal-options" id="venpranzo-options">
+          <div class="meal-option"><input type="radio" name="ven_pranzo" id="vp1" value="Pasta sugo normale"><label for="vp1"><span class="check-circle"></span>Pasta sugo a scelta normale</label></div>
+          <div class="meal-option"><input type="radio" name="ven_pranzo" id="vp2" value="Pasta sugo abbondante"><label for="vp2"><span class="check-circle"></span>Pasta sugo a scelta abbondante</label></div>
+          <div class="meal-option"><input type="radio" name="ven_pranzo" id="vp3" value="Primo senza glutine"><label for="vp3"><span class="check-circle"></span>Primo senza glutine</label></div>
+        </div>
+        <div class="label-piccolo" style="margin-top:14px">Scegli il secondo</div>
+        <div class="meal-options">
+          <div class="meal-option"><input type="radio" name="ven_pranzo_sec" id="vps1" value="1/2 Pollo allo spiedo + contorno"><label for="vps1"><span class="check-circle"></span>½ Pollo allo spiedo + contorno</label></div>
+          <div class="meal-option"><input type="radio" name="ven_pranzo_sec" id="vps2" value="Tacchino ai ferri + contorno"><label for="vps2"><span class="check-circle"></span>Tacchino ai ferri + contorno</label></div>
+          <div class="meal-option"><input type="radio" name="ven_pranzo_sec" id="vps3" value="Formaggio grigliato + contorno"><label for="vps3"><span class="check-circle"></span>Formaggio grigliato + contorno</label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VENERDÌ CENA -->
+    <div class="sezione">
+      <div class="sezione-header">
+        <div>
+          <div class="giorno">Venerdì</div>
+          <div class="pasto">Cena</div>
+        </div>
+      </div>
+      <div class="sezione-body">
+        <div class="label-piccolo">Scegli il primo</div>
+        <div class="meal-options">
+          <div class="meal-option"><input type="radio" name="ven_cena" id="vc1" value="Pasta sugo normale"><label for="vc1"><span class="check-circle"></span>Pasta sugo a scelta normale</label></div>
+          <div class="meal-option"><input type="radio" name="ven_cena" id="vc2" value="Pasta sugo abbondante"><label for="vc2"><span class="check-circle"></span>Pasta sugo a scelta abbondante</label></div>
+          <div class="meal-option"><input type="radio" name="ven_cena" id="vc3" value="Primo senza glutine"><label for="vc3"><span class="check-circle"></span>Primo senza glutine</label></div>
+        </div>
+        <div class="label-piccolo" style="margin-top:14px">Scegli il secondo</div>
+        <div class="meal-options">
+          <div class="meal-option"><input type="radio" name="ven_cena_sec" id="vcs1" value="1/2 Pollo allo spiedo + contorno"><label for="vcs1"><span class="check-circle"></span>½ Pollo allo spiedo + contorno</label></div>
+          <div class="meal-option"><input type="radio" name="ven_cena_sec" id="vcs2" value="Cotoletta + contorno"><label for="vcs2"><span class="check-circle"></span>Cotoletta + contorno</label></div>
+          <div class="meal-option"><input type="radio" name="ven_cena_sec" id="vcs3" value="Formaggio grigliato + contorno"><label for="vcs3"><span class="check-circle"></span>Formaggio grigliato + contorno</label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SABATO PRANZO -->
+    <div class="sezione">
+      <div class="sezione-header">
+        <div>
+          <div class="giorno">Sabato</div>
+          <div class="pasto">Pranzo</div>
+        </div>
+      </div>
+      <div class="sezione-body">
+        <div class="label-piccolo">Scegli il primo</div>
+        <div class="meal-options">
+          <div class="meal-option"><input type="radio" name="sab_pranzo" id="sp1" value="Pasta sugo normale"><label for="sp1"><span class="check-circle"></span>Pasta sugo a scelta normale</label></div>
+          <div class="meal-option"><input type="radio" name="sab_pranzo" id="sp2" value="Pasta sugo abbondante"><label for="sp2"><span class="check-circle"></span>Pasta sugo a scelta abbondante</label></div>
+          <div class="meal-option"><input type="radio" name="sab_pranzo" id="sp3" value="Primo senza glutine"><label for="sp3"><span class="check-circle"></span>Primo senza glutine</label></div>
+        </div>
+        <div class="label-piccolo" style="margin-top:14px">Scegli il secondo</div>
+        <div class="meal-options">
+          <div class="meal-option"><input type="radio" name="sab_pranzo_sec" id="sps1" value="1/2 Pollo allo spiedo + contorno"><label for="sps1"><span class="check-circle"></span>½ Pollo allo spiedo + contorno</label></div>
+          <div class="meal-option"><input type="radio" name="sab_pranzo_sec" id="sps2" value="Tacchino ai ferri + contorno"><label for="sps2"><span class="check-circle"></span>Tacchino ai ferri + contorno</label></div>
+          <div class="meal-option"><input type="radio" name="sab_pranzo_sec" id="sps3" value="Formaggio grigliato + contorno"><label for="sps3"><span class="check-circle"></span>Formaggio grigliato + contorno</label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SABATO CENA -->
+    <div class="sezione">
+      <div class="sezione-header">
+        <div>
+          <div class="giorno">Sabato</div>
+          <div class="pasto">Cena</div>
+        </div>
+      </div>
+      <div class="sezione-body">
+        <div class="label-piccolo">Scegli il primo</div>
+        <div class="meal-options">
+          <div class="meal-option"><input type="radio" name="sab_cena" id="sc1" value="Pasta sugo normale"><label for="sc1"><span class="check-circle"></span>Pasta sugo a scelta normale</label></div>
+          <div class="meal-option"><input type="radio" name="sab_cena" id="sc2" value="Pasta sugo abbondante"><label for="sc2"><span class="check-circle"></span>Pasta sugo a scelta abbondante</label></div>
+          <div class="meal-option"><input type="radio" name="sab_cena" id="sc3" value="Primo senza glutine"><label for="sc3"><span class="check-circle"></span>Primo senza glutine</label></div>
+        </div>
+        <div class="label-piccolo" style="margin-top:14px">Scegli il secondo</div>
+        <div class="meal-options">
+          <div class="meal-option"><input type="radio" name="sab_cena_sec" id="scs1" value="1/2 Pollo allo spiedo + contorno"><label for="scs1"><span class="check-circle"></span>½ Pollo allo spiedo + contorno</label></div>
+          <div class="meal-option"><input type="radio" name="sab_cena_sec" id="scs2" value="Cotoletta + contorno"><label for="scs2"><span class="check-circle"></span>Cotoletta + contorno</label></div>
+          <div class="meal-option"><input type="radio" name="sab_cena_sec" id="scs3" value="Formaggio grigliato + contorno"><label for="scs3"><span class="check-circle"></span>Formaggio grigliato + contorno</label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOMENICA PRANZO -->
+    <div class="sezione">
+      <div class="sezione-header">
+        <div>
+          <div class="giorno">Domenica</div>
+          <div class="pasto">Pranzo</div>
+        </div>
+      </div>
+      <div class="sezione-body">
+        <div class="label-piccolo">Scegli il primo</div>
+        <div class="meal-options">
+          <div class="meal-option"><input type="radio" name="dom_pranzo" id="dp1" value="Pasta sugo normale"><label for="dp1"><span class="check-circle"></span>Pasta sugo a scelta normale</label></div>
+          <div class="meal-option"><input type="radio" name="dom_pranzo" id="dp2" value="Pasta sugo abbondante"><label for="dp2"><span class="check-circle"></span>Pasta sugo a scelta abbondante</label></div>
+          <div class="meal-option"><input type="radio" name="dom_pranzo" id="dp3" value="Primo senza glutine"><label for="dp3"><span class="check-circle"></span>Primo senza glutine</label></div>
+        </div>
+        <div class="label-piccolo" style="margin-top:14px">Scegli il secondo</div>
+        <div class="meal-options">
+          <div class="meal-option"><input type="radio" name="dom_pranzo_sec" id="dps1" value="1/2 Pollo allo spiedo + contorno"><label for="dps1"><span class="check-circle"></span>½ Pollo allo spiedo + contorno</label></div>
+          <div class="meal-option"><input type="radio" name="dom_pranzo_sec" id="dps2" value="Tacchino ai ferri + contorno"><label for="dps2"><span class="check-circle"></span>Tacchino ai ferri + contorno</label></div>
+          <div class="meal-option"><input type="radio" name="dom_pranzo_sec" id="dps3" value="Formaggio grigliato + contorno"><label for="dps3"><span class="check-circle"></span>Formaggio grigliato + contorno</label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DATI PERSONALI (ROOMING LIST) -->
+    <div class="taglie-sezione" style="margin-bottom:16px">
+      <div class="taglie-header">
+        <div class="label">Scheda di Notificazione</div>
+        <h3>DATI PERSONALI</h3>
+      </div>
+      <div style="padding:20px 24px">
+        <!-- Badge precompilati -->
+        <div style="display:flex;gap:10px;margin-bottom:20px">
+          <div style="display:flex;align-items:center;gap:8px;background:#eef5ff;border:2px solid var(--azzurro);border-radius:10px;padding:10px 16px;flex:1">
+            <span style="font-size:18px">🏊</span>
+            <div>
+              <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#94a3b8">Ruolo</div>
+              <div style="font-weight:700;color:var(--azzurro);font-size:15px" id="badge-ruolo">—</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;background:#eef5ff;border:2px solid var(--azzurro);border-radius:10px;padding:10px 16px;flex:1">
+            <span style="font-size:18px">👤</span>
+            <div>
+              <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#94a3b8">Sesso</div>
+              <div style="font-weight:700;color:var(--azzurro);font-size:15px" id="badge-sesso">—</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div>
+            <label style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#94a3b8;display:block;margin-bottom:6px" for="data-nascita">📅 Data di nascita</label>
+            <input type="date" id="data-nascita" style="width:100%;padding:12px 14px;border:2px solid var(--bordo);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;background:var(--grigio);color:var(--testo);transition:border-color .2s" onfocus="this.style.borderColor='var(--azzurro)';this.style.background='white'" onblur="this.style.borderColor='var(--bordo)';this.style.background='var(--grigio)'">
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#94a3b8;display:block;margin-bottom:6px" for="luogo-nascita">📍 Luogo di nascita</label>
+            <input type="text" id="luogo-nascita" placeholder="es. Venezia" style="width:100%;padding:12px 14px;border:2px solid var(--bordo);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;background:var(--grigio);color:var(--testo);transition:border-color .2s" onfocus="this.style.borderColor='var(--azzurro)';this.style.background='white'" onblur="this.style.borderColor='var(--bordo)';this.style.background='var(--grigio)'">
+          </div>
+          <div style="grid-column:1/-1">
+            <label style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#94a3b8;display:block;margin-bottom:6px" for="residenza">🏠 Residenza (località, città)</label>
+            <input type="text" id="residenza" placeholder="es. Via Roma 1, Padova" style="width:100%;padding:12px 14px;border:2px solid var(--bordo);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;background:var(--grigio);color:var(--testo);transition:border-color .2s" onfocus="this.style.borderColor='var(--azzurro)';this.style.background='white'" onblur="this.style.borderColor='var(--bordo)';this.style.background='var(--grigio)'">
+          </div>
+          <div style="grid-column:1/-1">
+            <label style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#94a3b8;display:block;margin-bottom:6px" for="cittadinanza">🌍 Cittadinanza</label>
+            <input type="text" id="cittadinanza" value="Italiana" style="width:100%;padding:12px 14px;border:2px solid var(--bordo);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;background:var(--grigio);color:var(--testo);transition:border-color .2s" onfocus="this.style.borderColor='var(--azzurro)';this.style.background='white'" onblur="this.style.borderColor='var(--bordo)';this.style.background='var(--grigio)'">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAGLIE -->
+    <div class="taglie-sezione">
+      <div class="taglie-header">
+        <div class="label">Vestiario</div>
+        <h3>TAGLIE</h3>
+      </div>
+      <div class="taglie-body">
+        <div class="taglia-group">
+          <label class="group-label" for="taglia-tshirt">👕 T-Shirt</label>
+          <select class="taglia-select" id="taglia-tshirt">
+            <option value="">— Seleziona taglia —</option>
+            <option>S</option><option>M</option><option>L</option><option>XL</option>
+          </select>
+        </div>
+        <div class="taglia-group">
+          <label class="group-label" for="taglia-bermuda">🩳 Bermuda / Pantaloncini</label>
+          <select class="taglia-select" id="taglia-bermuda">
+            <option value="">— Seleziona taglia —</option>
+            <option>S</option><option>M</option><option>L</option><option>XL</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-submit" id="btn-submit" onclick="submitForm()">INVIA LE MIE SCELTE →</button>
+  </div>
+
+  <!-- ══ STEP 3: Successo ══ -->
+  <div class="step" id="step-success">
+    <div class="success-card">
+      <div class="success-icon">✓</div>
+      <h2>INVIATO!</h2>
+      <p>Le tue scelte sono state salvate correttamente.<br><strong id="success-nome"></strong>, ci vediamo a Merano! 🏊</p>
+      <button class="btn-nuovo" onclick="goBack(); goBack();">Compila per un altro atleta</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════
+//  ⚙️  CONFIGURAZIONE — modifica solo questa riga
+// ══════════════════════════════════════════════
+const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzNRsQ5Oqn6KmH4_1cVMOchOODCS5l73zrbHpt77lJIc-59fQGP1YOy5qJtFScTzG8b/exec';
+// ══════════════════════════════════════════════
+
+const ATLETI = [
+  { nome: 'CAPPELLAZZO DAMIANO',    societa: 'HYDROS',        ruolo: 'A', sesso: 'M' },
+  { nome: "DALL'ACQUA EDOARDO",     societa: 'HYDROS',        ruolo: 'A', sesso: 'M' },
+  { nome: 'FRULIO BENEDETTA',       societa: 'HYDROS',        ruolo: 'A', sesso: 'F' },
+  { nome: 'GUGELMETTO MATTIA',      societa: 'PADOVANUOTO',   ruolo: 'A', sesso: 'M' },
+  { nome: 'MANTESE PIETRO',         societa: 'RANAZZURRA',    ruolo: 'A', sesso: 'M' },
+  { nome: 'MENEGHELLO MARIA CARLA', societa: 'TEAM VERONA',   ruolo: 'A', sesso: 'F' },
+  { nome: 'MONESTIER FILIPPO',      societa: 'TEAM VENETO',   ruolo: 'A', sesso: 'M' },
+  { nome: 'NAE RAZVAN GABRIEL',     societa: 'HYDROS',        ruolo: 'A', sesso: 'M' },
+  { nome: 'NEZZO ARIANNA',          societa: 'PADOVANUOTO',   ruolo: 'A', sesso: 'F' },
+  { nome: 'NOARO ELISA',            societa: 'TEAM VERONA',   ruolo: 'A', sesso: 'F' },
+  { nome: 'NOVELLO MASSIMO',        societa: 'HYDROS',        ruolo: 'A', sesso: 'M' },
+  { nome: 'OSTANELLO SAMUELE',      societa: 'LEOSPORT',      ruolo: 'A', sesso: 'M' },
+  { nome: "PETTENA' GIORGIA",       societa: 'GP NUOTO MIRA', ruolo: 'A', sesso: 'F' },
+  { nome: 'PICCOLI GIADA',          societa: 'NOTTOLI',       ruolo: 'A', sesso: 'F' },
+  { nome: 'SALERNO ALESSIA',        societa: 'PADOVANUOTO',   ruolo: 'A', sesso: 'F' },
+  { nome: 'SARTOR IVAN',            societa: 'MONTEBELLUNA',  ruolo: 'A', sesso: 'M' },
+  { nome: 'SFOGGIA ANITA',          societa: 'MONTEBELLUNA',  ruolo: 'A', sesso: 'F' },
+  { nome: 'SFOGGIA GEMMA',          societa: 'MONTEBELLUNA',  ruolo: 'A', sesso: 'F' },
+  { nome: 'SINAGRA GIUSEPPE MARCO', societa: 'PADOVANUOTO',   ruolo: 'A', sesso: 'M' },
+  { nome: 'SORRENTINO AGNESE MARIA',societa: 'HYDROS',        ruolo: 'A', sesso: 'F' },
+  { nome: 'TORMENA FEDERICO',       societa: 'NOTTOLI',       ruolo: 'A', sesso: 'M' },
+  { nome: 'TREVISAN EVITA',         societa: 'TEAM VERONA',   ruolo: 'A', sesso: 'F' },
+  { nome: 'VENDRAMINI LINDA',       societa: 'HYDROS',        ruolo: 'A', sesso: 'F' },
+  { nome: 'ZERLOTTO KEVIN',         societa: 'BENTEGODI',     ruolo: 'A', sesso: 'M' },
+  { nome: 'DAL CORSO IVAN',         societa: 'Staff',         ruolo: 'T', sesso: 'M' },
+  { nome: 'MOROSIN DANIELA',        societa: 'Staff',         ruolo: 'T', sesso: 'F' },
+  { nome: 'ROMEO STEFANO',          societa: 'Staff',         ruolo: 'T', sesso: 'M' },
+];
+
+let selectedAtleta = null;
+let stepHistory = ['step-search'];
+
+// Mostra avviso configurazione se URL non è stato impostato
+if (WEBAPP_URL === 'INSERISCI_QUI_LA_TUA_WEB_APP_URL') {
+  document.getElementById('config-warning').style.display = 'block';
+}
+
+// Ricerca atleti
+document.getElementById('search-input').addEventListener('input', function () {
+  const q = this.value.trim().toLowerCase();
+  const list = document.getElementById('results-list');
+  if (q.length < 2) { list.innerHTML = ''; return; }
+
+  const matches = ATLETI.filter(a => a.nome.toLowerCase().includes(q));
+  if (matches.length === 0) {
+    list.innerHTML = '<p style="color:#94a3b8;font-size:14px;padding:10px 0">Nessun atleta trovato</p>';
+    return;
+  }
+
+  list.innerHTML = matches.map(a => `
+    <div class="result-item" onclick="selectAtleta('${a.nome.replace(/'/g,"\\'")}', '${a.societa}')">
+      <div>
+        <div class="result-name">${a.nome}</div>
+        <div class="result-societa">${a.societa}</div>
+      </div>
+      <div class="result-arrow">→</div>
+    </div>
+  `).join('');
+});
+
+function selectAtleta(nome, societa) {
+  const a = ATLETI.find(x => x.nome === nome);
+  selectedAtleta = { nome, societa, ruolo: a ? a.ruolo : '', sesso: a ? a.sesso : '' };
+  document.getElementById('atleta-nome').textContent = nome;
+  document.getElementById('atleta-societa').textContent = societa;
+  const initials = nome.split(' ').slice(0,2).map(p=>p[0]).join('');
+  document.getElementById('avatar-text').textContent = initials;
+  document.getElementById('success-nome').textContent = nome.split(' ')[0];
+
+  // Mostra badge ruolo/sesso precompilati
+  document.getElementById('badge-ruolo').textContent = a && a.ruolo === 'T' ? 'Tecnico' : 'Atleta';
+  document.getElementById('badge-sesso').textContent = a && a.sesso === 'F' ? '♀ Femmina' : '♂ Maschio';
+
+  // Reset tutte le scelte
+  document.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+  document.getElementById('taglia-tshirt').value = '';
+  document.getElementById('taglia-bermuda').value = '';
+  document.getElementById('data-nascita').value = '';
+  document.getElementById('luogo-nascita').value = '';
+  document.getElementById('residenza').value = '';
+  document.getElementById('cittadinanza').value = 'Italiana';
+
+  showStep('step-form');
+}
+
+function showStep(id) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  stepHistory.push(id);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goBack() {
+  stepHistory.pop();
+  const prev = stepHistory[stepHistory.length - 1] || 'step-search';
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById(prev).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function getRadio(name) {
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  return el ? el.value : '';
+}
+
+function showToast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (isError ? ' error' : '');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+async function submitForm() {
+  if (!selectedAtleta) return;
+
+  const data = {
+    nome: selectedAtleta.nome,
+    societa: selectedAtleta.societa,
+    ruolo: selectedAtleta.ruolo,
+    sesso: selectedAtleta.sesso,
+    data_nascita:  document.getElementById('data-nascita').value,
+    luogo_nascita: document.getElementById('luogo-nascita').value,
+    residenza:     document.getElementById('residenza').value,
+    cittadinanza:  document.getElementById('cittadinanza').value,
+    ven_pranzo_primo:   getRadio('ven_pranzo'),
+    ven_pranzo_secondo: getRadio('ven_pranzo_sec'),
+    ven_cena_primo:     getRadio('ven_cena'),
+    ven_cena_secondo:   getRadio('ven_cena_sec'),
+    sab_pranzo_primo:   getRadio('sab_pranzo'),
+    sab_pranzo_secondo: getRadio('sab_pranzo_sec'),
+    sab_cena_primo:     getRadio('sab_cena'),
+    sab_cena_secondo:   getRadio('sab_cena_sec'),
+    dom_pranzo_primo:   getRadio('dom_pranzo'),
+    dom_pranzo_secondo: getRadio('dom_pranzo_sec'),
+    taglia_tshirt:   document.getElementById('taglia-tshirt').value,
+    taglia_bermuda:  document.getElementById('taglia-bermuda').value,
+    timestamp: new Date().toLocaleString('it-IT'),
+  };
+
+  if (WEBAPP_URL === 'INSERISCI_QUI_LA_TUA_WEB_APP_URL') {
+    showToast('⚠️ Configura prima la Web App URL!', true);
+    return;
+  }
+
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.textContent = 'INVIO IN CORSO…';
+
+  try {
+    // Usiamo un iframe nascosto per aggirare i limiti CORS di Google Apps Script
+    await new Promise(function(resolve, reject) {
+      var form = document.createElement('form');
+      form.method = 'POST';
+      form.action = WEBAPP_URL;
+      form.target = 'hidden-iframe';
+      form.style.display = 'none';
+
+      var input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'payload';
+      input.value = JSON.stringify(data);
+      form.appendChild(input);
+
+      var iframe = document.getElementById('hidden-iframe');
+      document.body.appendChild(form);
+      iframe.onload = function() { resolve(); };
+      setTimeout(resolve, 3000); // fallback timeout
+      form.submit();
+      document.body.removeChild(form);
+    });
+    showStep('step-success');
+  } catch (e) {
+    showToast('Errore di connessione. Riprova.', true);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'INVIA LE MIE SCELTE →';
+  }
+}
+</script>
+<iframe name="hidden-iframe" style="display:none"></iframe>
+</body>
+</html>
