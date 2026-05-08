@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIN Veneto – Merano 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blu:#0a1628; --azzurro:#1a6fd4; --azzurro2:#3a9bd5;
+  --oro:#f0b429; --grigio:#f4f6fa; --testo:#1a2035;
+  --bordo:#dde3f0; --verde:#22c55e;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--grigio);color:var(--testo);min-height:100vh;}
+
+/* HEADER */
+header{background:var(--blu);color:white;position:relative;overflow:hidden;}
+header::before{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:var(--azzurro);border-radius:50%;opacity:.15;}
+header::after{content:'';position:absolute;bottom:-40px;left:20%;width:200px;height:200px;background:var(--oro);border-radius:50%;opacity:.08;}
+.header-inner{max-width:780px;margin:0 auto;padding:36px 24px 28px;position:relative;z-index:1;}
+.header-badge{display:inline-block;background:var(--azzurro);color:white;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:12px;}
+header h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,8vw,64px);letter-spacing:3px;line-height:1;}
+header h1 span{color:var(--oro);}
+header p{margin-top:10px;color:rgba(255,255,255,.65);font-size:14px;font-weight:300;}
+
+/* CONTAINER */
+.container{max-width:780px;margin:0 auto;padding:32px 16px 60px;}
+.step{display:none;}
+.step.active{display:block;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* SEARCH */
+.card{background:white;border-radius:16px;padding:28px;box-shadow:0 4px 24px rgba(10,22,40,.08);margin-bottom:16px;}
+.card h2{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1.5px;color:var(--blu);margin-bottom:6px;}
+.card p{color:#6b7a99;font-size:14px;margin-bottom:18px;}
+.search-wrap{position:relative;}
+.search-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#94a3b8;}
+.search-wrap input{width:100%;padding:13px 16px 13px 44px;border:2px solid var(--bordo);border-radius:10px;font-size:15px;font-family:'DM Sans',sans-serif;outline:none;background:var(--grigio);transition:border-color .2s;}
+.search-wrap input:focus{border-color:var(--azzurro);background:white;}
+.results{margin-top:10px;display:flex;flex-direction:column;gap:6px;}
+.result-item{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-radius:10px;border:2px solid var(--bordo);cursor:pointer;transition:all .2s;background:white;}
+.result-item:hover{border-color:var(--azzurro);background:#f0f6ff;transform:translateX(4px);}
+.result-name{font-weight:600;font-size:15px;}
+.result-sub{font-size:12px;color:#94a3b8;margin-top:2px;}
+.result-arrow{color:var(--azzurro);font-size:18px;}
+
+/* FORM HEADER */
+.form-head{display:flex;align-items:center;gap:16px;}
+.avatar{width:52px;height:52px;background:linear-gradient(135deg,var(--azzurro),var(--azzurro2));border-radius:14px;display:flex;align-items:center;justify-content:center;color:white;font-family:'Bebas Neue',sans-serif;font-size:22px;flex-shrink:0;}
+.form-head h2{font-weight:700;font-size:18px;color:var(--blu);}
+.form-head p{font-size:13px;color:#94a3b8;margin-top:2px;}
+.btn-back{margin-left:auto;background:none;border:2px solid var(--bordo);border-radius:8px;padding:8px 14px;font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;color:#6b7a99;transition:all .2s;flex-shrink:0;}
+.btn-back:hover{border-color:#94a3b8;color:var(--testo);}
+
+/* SEZIONE PASTO */
+.sezione{background:white;border-radius:16px;box-shadow:0 4px 24px rgba(10,22,40,.08);margin-bottom:14px;overflow:hidden;}
+.sez-head{background:var(--blu);padding:12px 22px;}
+.sez-giorno{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--oro);}
+.sez-pasto{font-family:'Bebas Neue',sans-serif;font-size:22px;color:white;letter-spacing:1px;}
+.sez-body{padding:18px 22px;}
+.label-sm{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#94a3b8;margin-bottom:8px;}
+.opzioni{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px;}
+@media(max-width:480px){.opzioni{grid-template-columns:1fr;}}
+.opzione{position:relative;}
+.opzione input[type=radio]{position:absolute;opacity:0;width:0;height:0;}
+.opzione label{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border-radius:10px;border:2px solid var(--bordo);cursor:pointer;transition:all .2s;font-size:13.5px;line-height:1.4;background:var(--grigio);}
+.opzione input:checked+label{border-color:var(--azzurro);background:#eef5ff;color:var(--azzurro);font-weight:600;}
+.opzione label:hover{border-color:var(--azzurro2);background:#f5f9ff;}
+.cerchio{width:18px;height:18px;border-radius:50%;border:2px solid var(--bordo);flex-shrink:0;margin-top:1px;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+.opzione input:checked+label .cerchio{background:var(--azzurro);border-color:var(--azzurro);}
+.opzione input:checked+label .cerchio::after{content:'✓';color:white;font-size:11px;font-weight:700;}
+.sep{margin-top:14px;}
+
+/* DATI PERSONALI + TAGLIE */
+.sezione-blu .sez-head{background:linear-gradient(135deg,#1a2035,#0a1628);}
+.badges{display:flex;gap:10px;margin-bottom:18px;}
+.badge{display:flex;align-items:center;gap:8px;background:#eef5ff;border:2px solid var(--azzurro);border-radius:10px;padding:10px 14px;flex:1;}
+.badge-icon{font-size:18px;}
+.badge-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#94a3b8;}
+.badge-val{font-weight:700;color:var(--azzurro);font-size:15px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:480px){.grid2{grid-template-columns:1fr;}}
+.campo label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#94a3b8;display:block;margin-bottom:6px;}
+.campo input,.campo select{width:100%;padding:12px 14px;border:2px solid var(--bordo);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;background:var(--grigio);color:var(--testo);transition:border-color .2s;}
+.campo input:focus,.campo select:focus{border-color:var(--azzurro);background:white;}
+.select-wrap{position:relative;}
+.select-wrap select{appearance:none;background:var(--grigio) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center;cursor:pointer;}
+.col-full{grid-column:1/-1;}
+
+/* SUBMIT */
+.btn-submit{width:100%;padding:17px;background:linear-gradient(135deg,var(--azzurro),var(--azzurro2));color:white;border:none;border-radius:12px;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;cursor:pointer;transition:all .25s;box-shadow:0 6px 20px rgba(26,111,212,.35);margin-top:8px;}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(26,111,212,.45);}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+
+/* SUCCESS */
+.success-card{background:white;border-radius:20px;padding:48px 28px;text-align:center;box-shadow:0 4px 24px rgba(10,22,40,.08);}
+.success-icon{width:72px;height:72px;background:linear-gradient(135deg,var(--verde),#16a34a);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:32px;box-shadow:0 8px 24px rgba(34,197,94,.3);}
+.success-card h2{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;color:var(--blu);margin-bottom:8px;}
+.success-card p{color:#6b7a99;font-size:15px;line-height:1.6;}
+.btn-altro{margin-top:28px;display:inline-block;padding:14px 28px;border:2px solid var(--bordo);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:#6b7a99;cursor:pointer;background:none;transition:all .2s;}
+.btn-altro:hover{border-color:var(--azzurro);color:var(--azzurro);}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--testo);color:white;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:500;transition:transform .3s ease;z-index:100;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.2);}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.err{background:#ef4444;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-badge">FIN Veneto</div>
+    <h1>MERANO <span>2026</span></h1>
+    <p>Selezione pasti e taglie vestiario — compila il form per il tuo nominativo</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- STEP 1: Ricerca -->
+  <div class="step active" id="step-search">
+    <div class="card">
+      <h2>CERCA IL TUO NOME</h2>
+      <p>Digita il tuo cognome o nome per trovare il tuo nominativo</p>
+      <div class="search-wrap">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="search-input" placeholder="es. Rossi, Mario…" autocomplete="off">
+      </div>
+      <div class="results" id="results"></div>
+    </div>
+  </div>
+
+  <!-- STEP 2: Form -->
+  <div class="step" id="step-form">
+
+    <!-- Intestazione atleta -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="form-head">
+        <div class="avatar" id="avatar"></div>
+        <div>
+          <h2 id="atleta-nome"></h2>
+          <p id="atleta-info"></p>
+        </div>
+        <button class="btn-back" onclick="goBack()">← Cambia</button>
+      </div>
+    </div>
+
+    <!-- DATI PERSONALI -->
+    <div class="sezione sezione-blu">
+      <div class="sez-head">
+        <div class="sez-giorno">Scheda di notificazione</div>
+        <div class="sez-pasto">DATI PERSONALI</div>
+      </div>
+      <div class="sez-body">
+        <div class="badges">
+          <div class="badge"><span class="badge-icon">🏊</span><div><div class="badge-label">Ruolo</div><div class="badge-val" id="badge-ruolo">—</div></div></div>
+          <div class="badge"><span class="badge-icon">👤</span><div><div class="badge-label">Sesso</div><div class="badge-val" id="badge-sesso">—</div></div></div>
+        </div>
+        <div class="grid2">
+          <div class="campo">
+            <label for="data-nascita">📅 Data di nascita</label>
+            <input type="date" id="data-nascita">
+          </div>
+          <div class="campo">
+            <label for="luogo-nascita">📍 Luogo di nascita</label>
+            <input type="text" id="luogo-nascita" placeholder="es. Venezia">
+          </div>
+          <div class="campo col-full">
+            <label for="residenza">🏠 Residenza (via, città)</label>
+            <input type="text" id="residenza" placeholder="es. Via Roma 1, Padova">
+          </div>
+          <div class="campo col-full">
+            <label for="cittadinanza">🌍 Cittadinanza</label>
+            <input type="text" id="cittadinanza" value="Italiana">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VENERDÌ PRANZO -->
+    <div class="sezione">
+      <div class="sez-head"><div class="sez-giorno">Venerdì</div><div class="sez-pasto">Pranzo</div></div>
+      <div class="sez-body">
+        <div class="label-sm">Primo</div>
+        <div class="opzioni">
+          <div class="opzione"><input type="radio" name="vp1" id="vp1a" value="Pasta sugo normale"><label for="vp1a"><span class="cerchio"></span>Pasta sugo a scelta normale</label></div>
+          <div class="opzione"><input type="radio" name="vp1" id="vp1b" value="Pasta sugo abbondante"><label for="vp1b"><span class="cerchio"></span>Pasta sugo a scelta abbondante</label></div>
+          <div class="opzione"><input type="radio" name="vp1" id="vp1c" value="Primo senza glutine"><label for="vp1c"><span class="cerchio"></span>Primo senza glutine</label></div>
+        </div>
+        <div class="label-sm sep">Secondo</div>
+        <div class="opzioni">
+          <div class="opzione"><input type="radio" name="vp2" id="vp2a" value="1/2 Pollo allo spiedo"><label for="vp2a"><span class="cerchio"></span>½ Pollo allo spiedo + contorno</label></div>
+          <div class="opzione"><input type="radio" name="vp2" id="vp2b" value="Tacchino ai ferri"><label for="vp2b"><span class="cerchio"></span>Tacchino ai ferri + contorno</label></div>
+          <div class="opzione"><input type="radio" name="vp2" id="vp2c" value="Formaggio grigliato"><label for="vp2c"><span class="cerchio"></span>Formaggio grigliato + contorno</label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VENERDÌ CENA -->
+    <div class="sezione">
+      <div class="sez-head"><div class="sez-giorno">Venerdì</div><div class="sez-pasto">Cena</div></div>
+      <div class="sez-body">
+        <div class="label-sm">Primo</div>
+        <div class="opzioni">
+          <div class="opzione"><input type="radio" name="vc1" id="vc1a" value="Pasta sugo normale"><label for="vc1a"><span class="cerchio"></span>Pasta sugo a scelta normale</label></div>
+          <div class="opzione"><input type="radio" name="vc1" id="vc1b" value="Pasta sugo abbondante"><label for="vc1b"><span class="cerchio"></span>Pasta sugo a scelta abbondante</label></div>
+          <div class="opzione"><input type="radio" name="vc1" id="vc1c" value="Primo senza glutine"><label for="vc1c"><span class="cerchio"></span>Primo senza glutine</label></div>
+        </div>
+        <div class="label-sm sep">Secondo</div>
+        <div class="opzioni">
+          <div class="opzione"><input type="radio" name="vc2" id="vc2a" value="1/2 Pollo allo spiedo"><label for="vc2a"><span class="cerchio"></span>½ Pollo allo spiedo + contorno</label></div>
+          <div class="opzione"><input type="radio" name="vc2" id="vc2b" value="Cotoletta"><label for="vc2b"><span class="cerchio"></span>Cotoletta + contorno</label></div>
+          <div class="opzione"><input type="radio" name="vc2" id="vc2c" value="Formaggio grigliato"><label for="vc2c"><span class="cerchio"></span>Formaggio grigliato + contorno</label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SABATO PRANZO -->
+    <div class="sezione">
+      <div class="sez-head"><div class="sez-giorno">Sabato</div><div class="sez-pasto">Pranzo</div></div>
+      <div class="sez-body">
+        <div class="label-sm">Primo</div>
+        <div class="opzioni">
+          <div class="opzione"><input type="radio" name="sp1" id="sp1a" value="Pasta sugo normale"><label for="sp1a"><span class="cerchio"></span>Pasta sugo a scelta normale</label></div>
+          <div class="opzione"><input type="radio" name="sp1" id="sp1b" value="Pasta sugo abbondante"><label for="sp1b"><span class="cerchio"></span>Pasta sugo a scelta abbondante</label></div>
+          <div class="opzione"><input type="radio" name="sp1" id="sp1c" value="Primo senza glutine"><label for="sp1c"><span class="cerchio"></span>Primo senza glutine</label></div>
+        </div>
+        <div class="label-sm sep">Secondo</div>
+        <div class="opzioni">
+          <div class="opzione"><input type="radio" name="sp2" id="sp2a" value="1/2 Pollo allo spiedo"><label for="sp2a"><span class="cerchio"></span>½ Pollo allo spiedo + contorno</label></div>
+          <div class="opzione"><input type="radio" name="sp2" id="sp2b" value="Tacchino ai ferri"><label for="sp2b"><span class="cerchio"></span>Tacchino ai ferri + contorno</label></div>
+          <div class="opzione"><input type="radio" name="sp2" id="sp2c" value="Formaggio grigliato"><label for="sp2c"><span class="cerchio"></span>Formaggio grigliato + contorno</label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SABATO CENA -->
+    <div class="sezione">
+      <div class="sez-head"><div class="sez-giorno">Sabato</div><div class="sez-pasto">Cena</div></div>
+      <div class="sez-body">
+        <div class="label-sm">Primo</div>
+        <div class="opzioni">
+          <div class="opzione"><input type="radio" name="sc1" id="sc1a" value="Pasta sugo normale"><label for="sc1a"><span class="cerchio"></span>Pasta sugo a scelta normale</label></div>
+          <div class="opzione"><input type="radio" name="sc1" id="sc1b" value="Pasta sugo abbondante"><label for="sc1b"><span class="cerchio"></span>Pasta sugo a scelta abbondante</label></div>
+          <div class="opzione"><input type="radio" name="sc1" id="sc1c" value="Primo senza glutine"><label for="sc1c"><span class="cerchio"></span>Primo senza glutine</label></div>
+        </div>
+        <div class="label-sm sep">Secondo</div>
+        <div class="opzioni">
+          <div class="opzione"><input type="radio" name="sc2" id="sc2a" value="1/2 Pollo allo spiedo"><label for="sc2a"><span class="cerchio"></span>½ Pollo allo spiedo + contorno</label></div>
+          <div class="opzione"><input type="radio" name="sc2" id="sc2b" value="Cotoletta"><label for="sc2b"><span class="cerchio"></span>Cotoletta + contorno</label></div>
+          <div class="opzione"><input type="radio" name="sc2" id="sc2c" value="Formaggio grigliato"><label for="sc2c"><span class="cerchio"></span>Formaggio grigliato + contorno</label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOMENICA PRANZO -->
+    <div class="sezione">
+      <div class="sez-head"><div class="sez-giorno">Domenica</div><div class="sez-pasto">Pranzo</div></div>
+      <div class="sez-body">
+        <div class="label-sm">Primo</div>
+        <div class="opzioni">
+          <div class="opzione"><input type="radio" name="dp1" id="dp1a" value="Pasta sugo normale"><label for="dp1a"><span class="cerchio"></span>Pasta sugo a scelta normale</label></div>
+          <div class="opzione"><input type="radio" name="dp1" id="dp1b" value="Pasta sugo abbondante"><label for="dp1b"><span class="cerchio"></span>Pasta sugo a scelta abbondante</label></div>
+          <div class="opzione"><input type="radio" name="dp1" id="dp1c" value="Primo senza glutine"><label for="dp1c"><span class="cerchio"></span>Primo senza glutine</label></div>
+        </div>
+        <div class="label-sm sep">Secondo</div>
+        <div class="opzioni">
+          <div class="opzione"><input type="radio" name="dp2" id="dp2a" value="1/2 Pollo allo spiedo"><label for="dp2a"><span class="cerchio"></span>½ Pollo allo spiedo + contorno</label></div>
+          <div class="opzione"><input type="radio" name="dp2" id="dp2b" value="Tacchino ai ferri"><label for="dp2b"><span class="cerchio"></span>Tacchino ai ferri + contorno</label></div>
+          <div class="opzione"><input type="radio" name="dp2" id="dp2c" value="Formaggio grigliato"><label for="dp2c"><span class="cerchio"></span>Formaggio grigliato + contorno</label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAGLIE -->
+    <div class="sezione sezione-blu">
+      <div class="sez-head"><div class="sez-giorno">Vestiario</div><div class="sez-pasto">TAGLIE</div></div>
+      <div class="sez-body">
+        <div class="grid2">
+          <div class="campo">
+            <label for="taglia-tshirt">👕 T-Shirt</label>
+            <div class="select-wrap">
+              <select id="taglia-tshirt">
+                <option value="">— Seleziona —</option>
+                <option>S</option><option>M</option><option>L</option><option>XL</option>
+              </select>
+            </div>
+          </div>
+          <div class="campo">
+            <label for="taglia-bermuda">🩳 Bermuda</label>
+            <div class="select-wrap">
+              <select id="taglia-bermuda">
+                <option value="">— Seleziona —</option>
+                <option>S</option><option>M</option><option>L</option><option>XL</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-submit" id="btn-submit" onclick="submitForm()">INVIA LE MIE SCELTE →</button>
+  </div>
+
+  <!-- STEP 3: Successo -->
+  <div class="step" id="step-success">
+    <div class="success-card">
+      <div class="success-icon">✓</div>
+      <h2>INVIATO!</h2>
+      <p>Le tue scelte sono state salvate correttamente.<br><strong id="success-nome"></strong>, ci vediamo a Merano! 🏊</p>
+      <button class="btn-altro" onclick="restart()">Compila per un altro atleta</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════
+// ⚙️  SOSTITUISCI CON IL TUO URL WEBAPP
+// ══════════════════════════════════════════════
+const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzVh2gQyZlI77DM6jytJLwDfqgm91Ti45-9awNUJiQQTHkXPzRvVvyOy360CLoFpUqC/exec';
+// ══════════════════════════════════════════════
+
+const ATLETI = [
+  { nome:'CAPPELLAZZO DAMIANO',    societa:'HYDROS',        ruolo:'A', sesso:'M' },
+  { nome:"DALL'ACQUA EDOARDO",     societa:'HYDROS',        ruolo:'A', sesso:'M' },
+  { nome:'FRULIO BENEDETTA',       societa:'HYDROS',        ruolo:'A', sesso:'F' },
+  { nome:'GUGELMETTO MATTIA',      societa:'PADOVANUOTO',   ruolo:'A', sesso:'M' },
+  { nome:'MANTESE PIETRO',         societa:'RANAZZURRA',    ruolo:'A', sesso:'M' },
+  { nome:'MENEGHELLO MARIA CARLA', societa:'TEAM VERONA',   ruolo:'A', sesso:'F' },
+  { nome:'MONESTIER FILIPPO',      societa:'TEAM VENETO',   ruolo:'A', sesso:'M' },
+  { nome:'NAE RAZVAN GABRIEL',     societa:'HYDROS',        ruolo:'A', sesso:'M' },
+  { nome:'NEZZO ARIANNA',          societa:'PADOVANUOTO',   ruolo:'A', sesso:'F' },
+  { nome:'NOARO ELISA',            societa:'TEAM VERONA',   ruolo:'A', sesso:'F' },
+  { nome:'NOVELLO MASSIMO',        societa:'HYDROS',        ruolo:'A', sesso:'M' },
+  { nome:'OSTANELLO SAMUELE',      societa:'LEOSPORT',      ruolo:'A', sesso:'M' },
+  { nome:"PETTENA' GIORGIA",       societa:'GP NUOTO MIRA', ruolo:'A', sesso:'F' },
+  { nome:'PICCOLI GIADA',          societa:'NOTTOLI',       ruolo:'A', sesso:'F' },
+  { nome:'SALERNO ALESSIA',        societa:'PADOVANUOTO',   ruolo:'A', sesso:'F' },
+  { nome:'SARTOR IVAN',            societa:'MONTEBELLUNA',  ruolo:'A', sesso:'M' },
+  { nome:'SFOGGIA ANITA',          societa:'MONTEBELLUNA',  ruolo:'A', sesso:'F' },
+  { nome:'SFOGGIA GEMMA',          societa:'MONTEBELLUNA',  ruolo:'A', sesso:'F' },
+  { nome:'SINAGRA GIUSEPPE MARCO', societa:'PADOVANUOTO',   ruolo:'A', sesso:'M' },
+  { nome:'SORRENTINO AGNESE MARIA',societa:'HYDROS',        ruolo:'A', sesso:'F' },
+  { nome:'TORMENA FEDERICO',       societa:'NOTTOLI',       ruolo:'A', sesso:'M' },
+  { nome:'TREVISAN EVITA',         societa:'TEAM VERONA',   ruolo:'A', sesso:'F' },
+  { nome:'VENDRAMINI LINDA',       societa:'HYDROS',        ruolo:'A', sesso:'F' },
+  { nome:'ZERLOTTO KEVIN',         societa:'BENTEGODI',     ruolo:'A', sesso:'M' },
+  { nome:'DAL CORSO IVAN',         societa:'Staff',         ruolo:'T', sesso:'M' },
+  { nome:'MOROSIN DANIELA',        societa:'Staff',         ruolo:'T', sesso:'F' },
+  { nome:'ROMEO STEFANO',          societa:'Staff',         ruolo:'T', sesso:'M' },
+];
+
+let atleta = null;
+
+document.getElementById('search-input').addEventListener('input', function() {
+  const q = this.value.trim().toLowerCase();
+  const list = document.getElementById('results');
+  if (q.length < 2) { list.innerHTML = ''; return; }
+  const hits = ATLETI.filter(a => a.nome.toLowerCase().includes(q));
+  if (!hits.length) { list.innerHTML = '<p style="color:#94a3b8;font-size:14px;padding:8px 0">Nessun atleta trovato</p>'; return; }
+  list.innerHTML = hits.map(a =>
+    `<div class="result-item" onclick="seleziona('${a.nome.replace(/'/g,"\\'")}')">
+      <div>
+        <div class="result-name">${a.nome}</div>
+        <div class="result-sub">${a.societa} · ${a.ruolo==='T'?'Tecnico':'Atleta'} · ${a.sesso==='F'?'♀':'♂'}</div>
+      </div>
+      <div class="result-arrow">→</div>
+    </div>`
+  ).join('');
+});
+
+function seleziona(nome) {
+  atleta = ATLETI.find(a => a.nome === nome);
+  if (!atleta) return;
+
+  document.getElementById('atleta-nome').textContent = atleta.nome;
+  document.getElementById('atleta-info').textContent = atleta.societa;
+  document.getElementById('avatar').textContent = atleta.nome.split(' ').slice(0,2).map(p=>p[0]).join('');
+  document.getElementById('badge-ruolo').textContent = atleta.ruolo === 'T' ? 'Tecnico' : 'Atleta';
+  document.getElementById('badge-sesso').textContent = atleta.sesso === 'F' ? '♀ Femmina' : '♂ Maschio';
+  document.getElementById('success-nome').textContent = atleta.nome.split(' ')[0];
+
+  // Reset campi
+  document.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+  ['taglia-tshirt','taglia-bermuda'].forEach(id => document.getElementById(id).value = '');
+  ['data-nascita','luogo-nascita','residenza'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('cittadinanza').value = 'Italiana';
+
+  mostraStep('step-form');
+}
+
+function mostraStep(id) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function goBack() { mostraStep('step-search'); }
+function restart() { mostraStep('step-search'); document.getElementById('search-input').value = ''; document.getElementById('results').innerHTML = ''; }
+
+function r(name) { const el = document.querySelector(`input[name="${name}"]:checked`); return el ? el.value : ''; }
+
+function toast(msg, err) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (err ? ' err' : '');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+async function submitForm() {
+  if (!atleta) return;
+
+  const params = new URLSearchParams({
+    nome: atleta.nome,
+    societa: atleta.societa,
+    ruolo: atleta.ruolo,
+    sesso: atleta.sesso,
+    data_nascita:  document.getElementById('data-nascita').value,
+    luogo_nascita: document.getElementById('luogo-nascita').value,
+    residenza:     document.getElementById('residenza').value,
+    cittadinanza:  document.getElementById('cittadinanza').value,
+    ven_pranzo_primo:   r('vp1'), ven_pranzo_secondo: r('vp2'),
+    ven_cena_primo:     r('vc1'), ven_cena_secondo:   r('vc2'),
+    sab_pranzo_primo:   r('sp1'), sab_pranzo_secondo: r('sp2'),
+    sab_cena_primo:     r('sc1'), sab_cena_secondo:   r('sc2'),
+    dom_pranzo_primo:   r('dp1'), dom_pranzo_secondo: r('dp2'),
+    taglia_tshirt:  document.getElementById('taglia-tshirt').value,
+    taglia_bermuda: document.getElementById('taglia-bermuda').value,
+    timestamp: new Date().toLocaleString('it-IT'),
+  });
+
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.textContent = 'INVIO IN CORSO…';
+
+  try {
+    // Usa fetch con no-cors + GET: funziona con Apps Script pubblicato come "Chiunque"
+    await fetch(WEBAPP_URL + '?' + params.toString(), { method:'GET', mode:'no-cors' });
+    mostraStep('step-success');
+  } catch(e) {
+    toast('Errore di connessione. Riprova.', true);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'INVIA LE MIE SCELTE →';
+  }
+}
+</script>
+</body>
+</html>
